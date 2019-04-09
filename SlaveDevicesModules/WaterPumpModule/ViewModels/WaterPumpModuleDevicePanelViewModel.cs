@@ -5,6 +5,7 @@ using ArduinoScadaManager.Common.ViewModels;
 
 namespace WaterPumpModule.ViewModels {
     public class WaterPumpModuleDevicePanelViewModel : SlaveModuleDevicePanelViewModelBase {
+        /// <inheritdoc />
         /// <summary>
         /// Design-time constructor
         /// </summary>
@@ -18,9 +19,9 @@ namespace WaterPumpModule.ViewModels {
 
         private void InitializeHoldingRegistersCheckboxes() {
             Checkboxes = new List<List<bool>>();
-            for (int i = 0; i < 5; i++) {
+            for (var i = 0; i < 5; i++) {
                 var list = new List<bool>();
-                for (int j = 0; j < 16; j++) {
+                for (var j = 0; j < 16; j++) {
                     list.Add(false);
                 }
 
