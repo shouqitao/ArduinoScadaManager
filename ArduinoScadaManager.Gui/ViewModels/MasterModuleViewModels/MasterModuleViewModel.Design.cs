@@ -1,10 +1,5 @@
-﻿namespace ArduinoScadaManager.Gui.ViewModels.MasterModuleViewModels
-{
-    public partial class MasterModuleViewModel
-    {
-        public MasterModuleViewModel()
-        {
-            
-        }
+﻿namespace ArduinoScadaManager.Gui.ViewModels.MasterModuleViewModels {
+    public partial class MasterModuleViewModel {
+        public MasterModuleViewModel() { }
     }
 }

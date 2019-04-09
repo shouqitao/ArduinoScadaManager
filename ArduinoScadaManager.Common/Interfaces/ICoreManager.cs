@@ -2,10 +2,8 @@ using System;
 using System.Collections.ObjectModel;
 using ArduinoScadaManager.Common.Core;
 
-namespace ArduinoScadaManager.Common.Interfaces
-{
-    public interface ICoreManager
-    {
+namespace ArduinoScadaManager.Common.Interfaces {
+    public interface ICoreManager {
         event Action<SlaveModuleProcessBase> SlaveModuleAdded;
         event Action<SlaveModuleProcessBase> SlaveModuleRemoved;
 

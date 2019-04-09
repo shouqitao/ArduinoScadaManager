@@ -3,19 +3,14 @@ using System.Linq;
 using ArduinoScadaManager.Common.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ArduinoScadaManager.Tests
-{
+namespace ArduinoScadaManager.Tests {
     [TestClass]
-    public class ByteHelpersTests
-    {
+    public class ByteHelpersTests {
         [TestMethod]
-        public void ShouldParseBitArrayToByteArray()
-        {
+        public void ShouldParseBitArrayToByteArray() {
             // Assign
-            var bitArray = new BitArray(new[]
-            {
-                true, false, true, true, false, true, true, false,
-                false, true, true, true, false, false, true, true,
+            var bitArray = new BitArray(new[] {
+                true, false, true, true, false, true, true, false, false, true, true, true, false, false, true, true,
                 true, true, false, false, true, true, true, false,
             });
 
@@ -23,7 +18,7 @@ namespace ArduinoScadaManager.Tests
             var result = bitArray.ToByteArray();
 
             // Assert
-            Assert.IsTrue(result.SequenceEqual(new byte[] { 1 }));
+            Assert.IsTrue(result.SequenceEqual(new byte[] {1}));
         }
     }
 }

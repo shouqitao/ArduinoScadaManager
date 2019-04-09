@@ -5,14 +5,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WaterPumpModule.ViewModels;
 
-namespace ArduinoScadaManager.Tests
-{
+namespace ArduinoScadaManager.Tests {
     [TestClass]
-    public class SlaveModuleRequestActions
-    {
+    public class SlaveModuleRequestActions {
         [TestMethod]
-        public void ShouldWriteMultipleCoils()
-        {
+        public void ShouldWriteMultipleCoils() {
             // Assign
             var modbusTransferManager = new Mock<IModbusTransferManager>();
             modbusTransferManager.Setup(x => x.SendAsMaster(It.IsAny<ModbusTransferData>(), 1));
@@ -27,11 +24,11 @@ namespace ArduinoScadaManager.Tests
                 slaveModuleProcess.Object);
 
             // Act
-            scadaPanelViewModel.WriteMultipleCoilsRequest(234, new BitArray(new []
-            {
-                true, false, true, true, false, false, true, false,
-                false, false, true, false, false, false, true, true,
-            }));
+            scadaPanelViewModel.WriteMultipleCoilsRequest(234,
+                new BitArray(new[] {
+                    true, false, true, true, false, false, true, false, false, false, true, false, false, false, true,
+                    true,
+                }));
 
 
             // Assert

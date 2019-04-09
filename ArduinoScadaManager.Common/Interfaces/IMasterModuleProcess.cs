@@ -2,10 +2,8 @@
 using System.Windows.Controls;
 using ArduinoScadaManager.Common.Infrastructure;
 
-namespace ArduinoScadaManager.Common.Interfaces
-{
-    public interface IMasterModuleProcess
-    {
+namespace ArduinoScadaManager.Common.Interfaces {
+    public interface IMasterModuleProcess {
         byte Identifier { get; set; }
         UserControl View { get; set; }
         RelayCommand RemoveScadaPanelCommand { get; set; }

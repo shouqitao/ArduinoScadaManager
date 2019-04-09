@@ -7,10 +7,8 @@ using ArduinoScadaManager.Common.Infrastructure;
 using ArduinoScadaManager.Common.Interfaces;
 using ArduinoScadaManager.Common.Models;
 
-namespace ArduinoScadaManager.Common.ViewModels
-{
-    public abstract class SlaveModuleDevicePanelViewModelBase : ViewModelBase
-    {
+namespace ArduinoScadaManager.Common.ViewModels {
+    public abstract class SlaveModuleDevicePanelViewModelBase : ViewModelBase {
         private readonly IModbusTransferManager _modbusTransferManager;
         private readonly SlaveModuleProcessBase _slaveModuleProcess;
 
@@ -23,21 +21,17 @@ namespace ArduinoScadaManager.Common.ViewModels
         /// <summary>
         /// Design-time constructor
         /// </summary>
-        public SlaveModuleDevicePanelViewModelBase()
-        {
-            
-        }
+        public SlaveModuleDevicePanelViewModelBase() { }
 
-        protected SlaveModuleDevicePanelViewModelBase(IModbusTransferManager modbusTransferManager, SlaveModuleProcessBase slaveModuleProcess)
-        {
+        protected SlaveModuleDevicePanelViewModelBase(IModbusTransferManager modbusTransferManager,
+            SlaveModuleProcessBase slaveModuleProcess) {
             _modbusTransferManager = modbusTransferManager;
             _slaveModuleProcess = slaveModuleProcess;
 
             PrepareUsageOfModbusTransferManager();
         }
 
-        private void PrepareUsageOfModbusTransferManager()
-        {
+        private void PrepareUsageOfModbusTransferManager() {
             _modbusTransferManager.SlavesDataReceived += OnSlavesDataReceived;
 
             Coils = new BitArray(256);
@@ -46,18 +40,16 @@ namespace ArduinoScadaManager.Common.ViewModels
             InputRegisters = new ushort[256];
         }
 
-        private void OnSlavesDataReceived(ModbusTransferData modbusTransferData)
-        {
+        private void OnSlavesDataReceived(ModbusTransferData modbusTransferData) {
             if (modbusTransferData.DeviceAddress == 0)
                 OnDataReceived(modbusTransferData);
 
-            if(modbusTransferData.DeviceAddress == _slaveModuleProcess.Identifier)
+            if (modbusTransferData.DeviceAddress == _slaveModuleProcess.Identifier)
                 OnDataReceived(modbusTransferData);
         }
 
-        private void SendReadCoilsOrInputsResponse(ModbusCommand command, BitArray data)
-        {
-            byte numOfDataBytes = (byte)Math.Ceiling(data.Length / 8.0f);
+        private void SendReadCoilsOrInputsResponse(ModbusCommand command, BitArray data) {
+            byte numOfDataBytes = (byte) Math.Ceiling(data.Length / 8.0f);
             var newData = new byte[1 + numOfDataBytes];
 
             newData[0] = numOfDataBytes;
@@ -66,16 +58,14 @@ namespace ArduinoScadaManager.Common.ViewModels
             SendReadResponse(command, newData);
         }
 
-        private void SendReadHoldingOrInputRegisterResponse(ModbusCommand command, ushort[] data)
-        {
+        private void SendReadHoldingOrInputRegisterResponse(ModbusCommand command, ushort[] data) {
             var tempByte = new byte[data.Length * 2];
             Buffer.BlockCopy(data, 0, tempByte, 0, tempByte.Length);
             SendReadResponse(command, tempByte);
         }
 
-        private void SendReadResponse(ModbusCommand command, byte[] data)
-        {
-            if(data == null) data = new byte[0];
+        private void SendReadResponse(ModbusCommand command, byte[] data) {
+            if (data == null) data = new byte[0];
 
             var newData = new byte[data.Length + 1];
             data[0] = (byte) data.Length;
@@ -85,15 +75,12 @@ namespace ArduinoScadaManager.Common.ViewModels
                 _slaveModuleProcess.Identifier, command, newData));
         }
 
-        private void SendResponse(ModbusTransferData modbusTransferData)
-        {
+        private void SendResponse(ModbusTransferData modbusTransferData) {
             _modbusTransferManager.SendAsSlave(modbusTransferData);
         }
 
-        private void OnDataReceived(ModbusTransferData modbusTransferData)
-        {
-            switch (modbusTransferData.Command)
-            {
+        private void OnDataReceived(ModbusTransferData modbusTransferData) {
+            switch (modbusTransferData.Command) {
                 case ModbusCommand.ReadCoils:
                     ReadCoilsOrInputs(modbusTransferData, Coils);
                     break;
@@ -123,15 +110,14 @@ namespace ArduinoScadaManager.Common.ViewModels
             }
         }
 
-        private void ReadCoilsOrInputs(ModbusTransferData modbusTransferData, BitArray coilsOrInputs)
-        {
+        private void ReadCoilsOrInputs(ModbusTransferData modbusTransferData, BitArray coilsOrInputs) {
             var data = modbusTransferData.Data;
 
             var startAddress = data.GetUint16(0);
             var numOfCoilsOrInputsToRead = data.GetUint16(2);
 
             var bitArray = coilsOrInputs.Get(
-                startAddress, 
+                startAddress,
                 numOfCoilsOrInputsToRead);
 
             SendReadCoilsOrInputsResponse(
@@ -139,8 +125,7 @@ namespace ArduinoScadaManager.Common.ViewModels
                 bitArray);
         }
 
-        private void ReadHoldingOrInputRegisters(ModbusTransferData modbusTransferData, ushort[] holdingOrInput)
-        {
+        private void ReadHoldingOrInputRegisters(ModbusTransferData modbusTransferData, ushort[] holdingOrInput) {
             var data = modbusTransferData.Data;
 
             var startAddress = data.GetUint16(0);
@@ -150,19 +135,17 @@ namespace ArduinoScadaManager.Common.ViewModels
             Array.Copy(holdingOrInput, startAddress, newData, 0, numOfHoldingOrInputRegistersToRead);
 
             SendReadHoldingOrInputRegisterResponse(
-                modbusTransferData.Command, 
+                modbusTransferData.Command,
                 newData);
         }
 
-        private void WriteSingleCoil(ModbusTransferData modbusTransferData)
-        {
+        private void WriteSingleCoil(ModbusTransferData modbusTransferData) {
             var data = modbusTransferData.Data;
 
             var address = data.GetUint16(0);
             var booleanData = data.GetUint16(2);
 
-            switch (booleanData)
-            {
+            switch (booleanData) {
                 case 0xFF00:
                     Coils[address] = true;
                     break;
@@ -172,11 +155,11 @@ namespace ArduinoScadaManager.Common.ViewModels
                 default:
                     throw new IndexOutOfRangeException();
             }
+
             SendResponse(modbusTransferData);
         }
 
-        private void WriteSingleRegister(ModbusTransferData modbusTransferData)
-        {
+        private void WriteSingleRegister(ModbusTransferData modbusTransferData) {
             var data = modbusTransferData.Data;
 
             var address = data.GetUint16(0);
@@ -187,8 +170,7 @@ namespace ArduinoScadaManager.Common.ViewModels
             SendResponse(modbusTransferData);
         }
 
-        private void WriteMultipleCoils(ModbusTransferData modbusTransferData)
-        {
+        private void WriteMultipleCoils(ModbusTransferData modbusTransferData) {
             var data = modbusTransferData.Data;
 
             var address = data.GetUint16(0);
@@ -199,8 +181,7 @@ namespace ArduinoScadaManager.Common.ViewModels
             Buffer.BlockCopy(data, 5, coilsData, 0, coilsData.Length);
 
             var bitArray = new BitArray(coilsData);
-            for (int i = 0; i < numOfCoilsToWrite; i++)
-            {
+            for (int i = 0; i < numOfCoilsToWrite; i++) {
                 Coils[address + i] = bitArray[i];
             }
 
@@ -213,8 +194,7 @@ namespace ArduinoScadaManager.Common.ViewModels
                 newData));
         }
 
-        private void WriteMultipleRegisters(ModbusTransferData modbusTransferData)
-        {
+        private void WriteMultipleRegisters(ModbusTransferData modbusTransferData) {
             var data = modbusTransferData.Data;
 
             var address = data.GetUint16(0);
@@ -224,8 +204,7 @@ namespace ArduinoScadaManager.Common.ViewModels
             var registersData = new ushort[numOfRegistersToWrite];
             Buffer.BlockCopy(data, 5, registersData, 0, numOfBytes);
 
-            for (int i = 0; i < numOfRegistersToWrite; i++)
-            {
+            for (int i = 0; i < numOfRegistersToWrite; i++) {
                 HoldingRegisters[address + i] = registersData[i];
             }
 

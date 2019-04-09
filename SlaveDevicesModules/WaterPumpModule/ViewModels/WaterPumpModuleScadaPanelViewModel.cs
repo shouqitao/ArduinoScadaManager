@@ -3,10 +3,8 @@ using ArduinoScadaManager.Common.Infrastructure;
 using ArduinoScadaManager.Common.Interfaces;
 using ArduinoScadaManager.Common.ViewModels;
 
-namespace WaterPumpModule.ViewModels
-{
-    public class WaterPumpModuleScadaPanelViewModel : SlaveModuleScadaPanelViewModelBase
-    {
+namespace WaterPumpModule.ViewModels {
+    public class WaterPumpModuleScadaPanelViewModel : SlaveModuleScadaPanelViewModelBase {
         #region Commands
 
         public RelayCommand ReadCoilsCommand { get; private set; }
@@ -22,82 +20,81 @@ namespace WaterPumpModule.ViewModels
         #endregion
 
         public WaterPumpModuleScadaPanelViewModel(
-            IModbusTransferManager modbusTransferManager, 
-            IMasterModuleProcess masterModuleProcess, 
+            IModbusTransferManager modbusTransferManager,
+            IMasterModuleProcess masterModuleProcess,
             ISlaveModuleProcess slaveModuleProcess)
-            : base(modbusTransferManager, masterModuleProcess, slaveModuleProcess)
-        {
-            ReadCoilsCommand = new RelayCommand(() => ReadCoilsRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
-            ReadInputsCommand = new RelayCommand(() => ReadInputsRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
-            ReadHoldingRegistersCommand = new RelayCommand(() => ReadHoldingRegistersRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
-            ReadInputRegistersCommand = new RelayCommand(() => ReadInputRegistersRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
-        
-            WriteSingleCoilCommand = new RelayCommand(() => WriteSingleCoilRequest((ushort) RequestAddress, WriteSingleCoilSelectedOption == 0));
-            WriteSingleRegisterCommand = new RelayCommand(() => WriteSingleRegisterRequest((ushort) RequestAddress, (ushort) WriteSingleRegisterContent));
+            : base(modbusTransferManager, masterModuleProcess, slaveModuleProcess) {
+            ReadCoilsCommand = new RelayCommand(() =>
+                ReadCoilsRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
+            ReadInputsCommand = new RelayCommand(() =>
+                ReadInputsRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
+            ReadHoldingRegistersCommand = new RelayCommand(() =>
+                ReadHoldingRegistersRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
+            ReadInputRegistersCommand = new RelayCommand(() =>
+                ReadInputRegistersRequest((ushort) RequestAddress, (ushort) ReadRequestNumOfElements));
+
+            WriteSingleCoilCommand = new RelayCommand(() =>
+                WriteSingleCoilRequest((ushort) RequestAddress, WriteSingleCoilSelectedOption == 0));
+            WriteSingleRegisterCommand = new RelayCommand(() =>
+                WriteSingleRegisterRequest((ushort) RequestAddress, (ushort) WriteSingleRegisterContent));
             //WriteMultipleCoilsCommand = new RelayCommand(() => WriteMultipleCoilsRequest((ushort) RequestAddress, ));
             //WriteMultipleRegistersCommand = new RelayCommand(() => WriteMultipleRegistersRequest((ushort) RequestAddress, ));
         }
 
-        protected override void OnDataReceived(ModbusTransferData modbusTransferData)
-        {
+        protected override void OnDataReceived(ModbusTransferData modbusTransferData) {
             LastResponse = modbusTransferData.ToString();
         }
 
         #region Properties
 
-        public string LastResponse
-        {
+        public string LastResponse {
             get { return _lastResponse; }
-            set
-            {
-                _lastResponse = value; 
+            set {
+                _lastResponse = value;
                 OnPropertyChanged();
             }
         }
+
         private string _lastResponse;
 
-        public int RequestAddress
-        {
+        public int RequestAddress {
             get { return _requestAddress; }
-            set
-            {
-                _requestAddress = value; 
+            set {
+                _requestAddress = value;
                 OnPropertyChanged();
             }
         }
+
         private int _requestAddress;
 
-        public int ReadRequestNumOfElements
-        {
+        public int ReadRequestNumOfElements {
             get { return _readRequestNumOfElements; }
-            set
-            {
+            set {
                 _readRequestNumOfElements = value;
                 OnPropertyChanged();
             }
         }
+
         private int _readRequestNumOfElements;
 
-        public int WriteSingleCoilSelectedOption
-        {
+        public int WriteSingleCoilSelectedOption {
             get { return _writeSingleCoilSelectedOption; }
-            set
-            {
-                _writeSingleCoilSelectedOption = value; 
+            set {
+                _writeSingleCoilSelectedOption = value;
                 OnPropertyChanged();
             }
         }
+
         private int _writeSingleCoilSelectedOption;
 
-        public int WriteSingleRegisterContent
-        {
+        public int WriteSingleRegisterContent {
             get { return _writeSingleRegisterContent; }
-            set
-            {
-                _writeSingleRegisterContent = value; 
+            set {
+                _writeSingleRegisterContent = value;
                 OnPropertyChanged();
             }
         }
+
         private int _writeSingleRegisterContent;
 
         #endregion

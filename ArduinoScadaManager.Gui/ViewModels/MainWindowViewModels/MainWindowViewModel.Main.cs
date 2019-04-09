@@ -10,10 +10,8 @@ using ArduinoScadaManager.Common.Infrastructure;
 using ArduinoScadaManager.Common.Interfaces;
 using ArduinoScadaManager.Gui.Core;
 
-namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels
-{
-    public sealed partial class MainWindowViewModel : ViewModelBase, ICoreManager, ILogger
-    {
+namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels {
+    public sealed partial class MainWindowViewModel : ViewModelBase, ICoreManager, ILogger {
         [ImportMany(typeof(ISlaveModule))]
         public List<ISlaveModule> SlaveModules { get; private set; }
 
@@ -23,30 +21,27 @@ namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels
         public ObservableCollection<IMasterModuleProcess> ActiveMasterScadaDevices { get; private set; }
         public ObservableCollection<SlaveModuleProcessBase> ActiveSlaveDevices { get; private set; }
 
-        public string OutputTextBoxContent
-        {
+        public string OutputTextBoxContent {
             get { return _outputTextBoxContent; }
-            set
-            {
+            set {
                 _outputTextBoxContent = value;
                 OnPropertyChanged();
             }
         }
+
         private string _outputTextBoxContent;
 
-        public bool IsProcessing
-        {
+        public bool IsProcessing {
             get { return _isProcessing; }
-            set
-            {
-                _isProcessing = value; 
+            set {
+                _isProcessing = value;
                 OnPropertyChanged();
             }
         }
+
         private bool _isProcessing;
 
-        public MainWindowViewModel(CompositionContainer compositionContainer)
-        {
+        public MainWindowViewModel(CompositionContainer compositionContainer) {
             compositionContainer.ComposeParts(this);
             InitializeCommands();
             ModbusTransferManager = new ModbusTransferManager(this);
@@ -55,28 +50,24 @@ namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels
             ActiveSlaveDevices = new ObservableCollection<SlaveModuleProcessBase>();
         }
 
-        private void AddNewSlaveModule(ISlaveModule slaveModuleToAdd)
-        {
+        private void AddNewSlaveModule(ISlaveModule slaveModuleToAdd) {
             var addedSlaveModule = slaveModuleToAdd.GetSlaveModuleProcess(this);
             ActiveSlaveDevices.Add(addedSlaveModule);
             OnSlaveModuleAdded(addedSlaveModule);
         }
 
-        public void RemoveSlaveModule(SlaveModuleProcessBase slaveModuleToDelete)
-        {
+        public void RemoveSlaveModule(SlaveModuleProcessBase slaveModuleToDelete) {
             ActiveSlaveDevices.Remove(slaveModuleToDelete);
             OnSlaveModuleRemoved(slaveModuleToDelete);
         }
 
-        private async Task InitializeSlavesConnection()
-        {
+        private async Task InitializeSlavesConnection() {
             IsProcessing = true;
             await ModbusTransferManager.InitializeModbusSlaveTransfers();
             IsProcessing = false;
         }
 
-        private async Task AddNewScadaModule()
-        {
+        private async Task AddNewScadaModule() {
             IsProcessing = true;
 
             var masterModuleProcess = new MasterModuleProcess(this);
@@ -86,44 +77,38 @@ namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels
             IsProcessing = false;
         }
 
-        public void WriteDebug(string content)
-        {
+        public void WriteDebug(string content) {
             OutputTextBoxContent += content + Environment.NewLine;
         }
 
-        public void RemoveScadaModule(IMasterModuleProcess jakasKlasa)
-        {
+        public void RemoveScadaModule(IMasterModuleProcess jakasKlasa) {
             ActiveMasterScadaDevices.Remove(jakasKlasa);
         }
 
-        public byte GenerateSlaveModuleIdentifier()
-        {
-            for (byte i = 1; i <= 255; i++)
-            {
+        public byte GenerateSlaveModuleIdentifier() {
+            for (byte i = 1; i <= 255; i++) {
                 if (ActiveSlaveDevices.All(x => x.Identifier != i))
                     return i;
             }
+
             throw new IndexOutOfRangeException("Too much slave modules.");
         }
 
-        public byte GenerateMasterModuleIdentifier()
-        {
-            for (byte i = 1; i <= 255 ; i++)
-            {
+        public byte GenerateMasterModuleIdentifier() {
+            for (byte i = 1; i <= 255; i++) {
                 if (ActiveMasterScadaDevices.All(x => x.Identifier != i))
                     return i;
             }
+
             throw new IndexOutOfRangeException("Too much master modules.");
         }
 
-        public override void Dispose()
-        {
+        public override void Dispose() {
             base.Dispose();
             ModbusTransferManager.Dispose();
         }
 
-        ~MainWindowViewModel()
-        {
+        ~MainWindowViewModel() {
             Dispose();
         }
     }

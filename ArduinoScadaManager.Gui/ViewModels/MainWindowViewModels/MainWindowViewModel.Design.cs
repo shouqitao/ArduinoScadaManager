@@ -8,44 +8,34 @@ using ArduinoScadaManager.Common.Interfaces;
 using ArduinoScadaManager.Common.ViewModels;
 using ArduinoScadaManager.Gui.Core;
 
-namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels
-{
-    public sealed partial class MainWindowViewModel
-    {
-        public MainWindowViewModel()
-        {
+namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels {
+    public sealed partial class MainWindowViewModel {
+        public MainWindowViewModel() {
             ModbusTransferManager = new ModbusTransferManager(this);
-            SlaveModules = new List<ISlaveModule>
-            {
+            SlaveModules = new List<ISlaveModule> {
                 new DesignSlaveModule(),
                 new DesignSlaveModule(),
                 new DesignSlaveModule(),
             };
         }
 
-        class DesignSlaveModule : ISlaveModule
-        {
-            public string Name
-            {
+        class DesignSlaveModule : ISlaveModule {
+            public string Name {
                 get { return "Sample slave module"; }
             }
 
-            public SlaveModuleProcessBase GetSlaveModuleProcess(ICoreManager manager)
-            {
+            public SlaveModuleProcessBase GetSlaveModuleProcess(ICoreManager manager) {
                 return new DesignSlaveModuleProcess();
             }
         }
 
-        class DesignSlaveModuleProcess : SlaveModuleProcessBase
-        {
+        class DesignSlaveModuleProcess : SlaveModuleProcessBase {
             private readonly UserControl _sampleUserControl;
 
             public DesignSlaveModuleProcess()
-                :base(new MainWindowViewModel(), "Sample")
-            {
-                _sampleUserControl = new UserControl
-                {
-                    Width  = 300,
+                : base(new MainWindowViewModel(), "Sample") {
+                _sampleUserControl = new UserControl {
+                    Width = 300,
                     Height = 200,
                     BorderBrush = new SolidColorBrush(Colors.Black),
                     BorderThickness = new Thickness(1),
@@ -53,14 +43,12 @@ namespace ArduinoScadaManager.Gui.ViewModels.MainWindowViewModels
             }
 
             protected override SlaveModuleScadaPanelViewModelBase GetScadaPanelOfSlaveModule(
-                IMasterModuleProcess masterModuleProcess, 
-                ISlaveModuleProcess slaveModuleProcessBase)
-            {
+                IMasterModuleProcess masterModuleProcess,
+                ISlaveModuleProcess slaveModuleProcessBase) {
                 throw new NotImplementedException();
             }
 
-            protected override UserControl GetDevicePanelView()
-            {
+            protected override UserControl GetDevicePanelView() {
                 throw new NotImplementedException();
             }
         }

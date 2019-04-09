@@ -1,5 +1,5 @@
 ﻿<UserControl x:Class="ArduinoScadaManager.Gui.Views.ScadaPanelView"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,8 +16,8 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding SlaveModuleProcess.Identifier}" Margin="0 0 10 0"/>
-                        <TextBlock Text="{Binding SlaveModuleProcess.Name}"/>
+                        <TextBlock Text="{Binding SlaveModuleProcess.Identifier}" Margin="0 0 10 0" />
+                        <TextBlock Text="{Binding SlaveModuleProcess.Name}" />
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
