@@ -30,12 +30,12 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         }
 
         public static byte[] ToByteArray(this BitArray bitArray) {
-            byte numOfDataBytes = (byte) Math.Ceiling(bitArray.Length / 8.0f);
+            var numOfDataBytes = (byte) Math.Ceiling(bitArray.Length / 8.0f);
             var bitsDataArray = new byte[numOfDataBytes];
 
-            for (int i = 0; i < bitArray.Length; i++) {
-                var currDataArrayOffset = i / 8;
-                byte currByteOffset = (byte) (i % 8);
+            for (var i = 0; i < bitArray.Length; i++) {
+                int currDataArrayOffset = i / 8;
+                var currByteOffset = (byte) (i % 8);
 
                 if ((bitArray[i]))
                     bitsDataArray[currDataArrayOffset] |= (byte) (1 << (currByteOffset));
@@ -45,13 +45,13 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         }
 
         public static ushort GetUint16(this byte[] data, int position) {
-            var tempArray = new[] {data[position + 1], data[position]};
+            byte[] tempArray = {data[position + 1], data[position]};
             return BitConverter.ToUInt16(tempArray, 0);
         }
 
         public static BitArray Get(this BitArray bitArray, int startIndex, int length) {
             var toReturn = new BitArray(length);
-            for (int i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 toReturn[i] = bitArray[i + startIndex];
             }
 

@@ -13,24 +13,19 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         /// <param name="execute">The execute.</param>
         /// <exception cref="System.ArgumentNullException">execute</exception>
         public RelayCommand(Action execute) {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class.
+        /// Initializes a new instance of the <see cref="T:ArduinoScadaManager.Common.Infrastructure.RelayCommand" /> class.
         /// </summary>
         /// <param name="execute">The execute.</param>
         /// <param name="canExecute">The can execute.</param>
-        /// <exception cref="System.ArgumentNullException">canExecute</exception>
+        /// <exception cref="T:System.ArgumentNullException">canExecute</exception>
         public RelayCommand(Action execute, Func<bool> canExecute)
             : this(execute) {
-            if (canExecute == null)
-                throw new ArgumentNullException("canExecute");
-
-            _canExecute = canExecute;
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         /// <summary>
@@ -48,7 +43,7 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         /// <returns>true if this command can be executed; otherwise, false.</returns>
         [DebuggerStepThrough]
         public bool CanExecute(object parameter) {
-            return _canExecute == null ? true : _canExecute();
+            return _canExecute?.Invoke() ?? true;
         }
 
         /// <summary>
@@ -71,10 +66,7 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         /// <param name="execute">The execute.</param>
         /// <exception cref="System.ArgumentNullException">execute</exception>
         public RelayCommand(Action<T> execute) {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         /// <summary>
@@ -85,10 +77,7 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         /// <exception cref="System.ArgumentNullException">canExecute</exception>
         public RelayCommand(Action<T> execute, Func<bool> canExecute)
             : this(execute) {
-            if (canExecute == null)
-                throw new ArgumentNullException("canExecute");
-
-            _canExecuteParameterless = canExecute;
+            _canExecuteParameterless = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         /// <summary>
@@ -99,10 +88,7 @@ namespace ArduinoScadaManager.Common.Infrastructure {
         /// <exception cref="System.ArgumentNullException">canExecute</exception>
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
             : this(execute) {
-            if (canExecute == null)
-                throw new ArgumentNullException("canExecute");
-
-            _canExecute = canExecute;
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         /// <summary>

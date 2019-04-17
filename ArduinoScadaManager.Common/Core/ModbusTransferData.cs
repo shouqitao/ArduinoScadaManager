@@ -46,13 +46,13 @@ namespace ArduinoScadaManager.Common.Core {
             Data.CopyTo(newArray, 2);
             BitConverter.GetBytes(Crc).CopyTo(newArray, Data.Length + 2);
 
-            return String.Format(":{0}\r\n", newArray.ByteArrayToHexString());
+            return $":{newArray.ByteArrayToHexString()}\r\n";
         }
 
         private void DecodeTransferData(string encodedTransferData) {
             var regex = new Regex(FrameParsePattern, RegexOptions.None);
 
-            var match = regex.Match(encodedTransferData);
+            Match match = regex.Match(encodedTransferData);
             if (!match.Success)
                 throw new ArgumentException("Line could not be parsed.");
 
@@ -60,14 +60,14 @@ namespace ArduinoScadaManager.Common.Core {
             Command = (ModbusCommand) match.Groups["cmd"].Value.HexStringToByteArray()[0];
             Data = match.Groups["data"].Value.HexStringToByteArray();
 
-            var crcBytes = match.Groups["crc"].Value.HexStringToByteArray();
-            ;
+            byte[] crcBytes = match.Groups["crc"].Value.HexStringToByteArray();
+
             Crc = BitConverter.ToUInt16(new[] {crcBytes[0], crcBytes[1]}, 0);
         }
 
         public override string ToString() {
-            return String.Format("DEV_ADDR: {0}, CMD: {1}, DAT: {2}, CRC: {3}",
-                DeviceAddress, Command, Data.ByteArrayToHexString(), IsCrcValid ? "OK" : "ERR");
+            return
+                $"DEV_ADDR: {DeviceAddress}, CMD: {Command}, DAT: {Data.ByteArrayToHexString()}, CRC: {(IsCrcValid ? "OK" : "ERR")}";
         }
     }
 }
