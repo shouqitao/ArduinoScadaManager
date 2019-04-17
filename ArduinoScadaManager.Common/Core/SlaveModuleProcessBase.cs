@@ -26,7 +26,8 @@ namespace ArduinoScadaManager.Common.Core {
             Name = name;
         }
 
-        public SlaveModuleScadaPanelViewModelBase GetScadaPanelOfSlaveModule(IMasterModuleProcess masterModuleProcess) {
+        public SlaveModuleScadaPanelViewModelBase GetScadaPanelOfSlaveModule(
+            IMasterModuleProcess masterModuleProcess) {
             return GetScadaPanelOfSlaveModule(masterModuleProcess, this);
         }
 

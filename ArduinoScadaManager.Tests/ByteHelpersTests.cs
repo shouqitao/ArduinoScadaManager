@@ -10,8 +10,8 @@ namespace ArduinoScadaManager.Tests {
         public void ShouldParseBitArrayToByteArray() {
             // Assign
             var bitArray = new BitArray(new[] {
-                true, false, true, true, false, true, true, false, false, true, true, true, false, false, true, true,
-                true, true, false, false, true, true, true, false,
+                true, false, true, true, false, true, true, false, false, true, true, true, false, false,
+                true, true, true, true, false, false, true, true, true, false,
             });
 
             // Act

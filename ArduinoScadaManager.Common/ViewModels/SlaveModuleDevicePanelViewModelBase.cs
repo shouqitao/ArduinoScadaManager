@@ -125,7 +125,8 @@ namespace ArduinoScadaManager.Common.ViewModels {
                 bitArray);
         }
 
-        private void ReadHoldingOrInputRegisters(ModbusTransferData modbusTransferData, ushort[] holdingOrInput) {
+        private void ReadHoldingOrInputRegisters(ModbusTransferData modbusTransferData,
+            ushort[] holdingOrInput) {
             var data = modbusTransferData.Data;
 
             var startAddress = data.GetUint16(0);

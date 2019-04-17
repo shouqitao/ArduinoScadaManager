@@ -23,7 +23,8 @@ namespace ArduinoScadaManager.Gui.Core {
         private readonly Dictionary<byte, CancellationTokenSource> _modbusMastersClientsCancels =
             new Dictionary<byte, CancellationTokenSource>();
 
-        private readonly Dictionary<byte, int> _modbusMasterClientPortAssociations = new Dictionary<byte, int>();
+        private readonly Dictionary<byte, int> _modbusMasterClientPortAssociations =
+            new Dictionary<byte, int>();
 
         private Client _modbusSlavesClient;
         private readonly CancellationTokenSource _modbusSlavesClientCancel = new CancellationTokenSource();
@@ -44,7 +45,8 @@ namespace ArduinoScadaManager.Gui.Core {
                 masterPort = GetAvailableMasterPort();
 
                 if (_connected) {
-                    await Task.Run(() => { masterClient = new Client(ArduinoIp, masterPort, cancellationToken.Token); },
+                    await Task.Run(
+                        () => { masterClient = new Client(ArduinoIp, masterPort, cancellationToken.Token); },
                         cancellationToken.Token);
 
                     _logger.WriteDebug(string.Format("CONNECTED TO MASTER WITH ID:{0}", masterIdentifier));
@@ -102,7 +104,10 @@ namespace ArduinoScadaManager.Gui.Core {
 
             try {
                 await Task.Run(
-                    () => { _modbusSlavesClient = new Client(ArduinoIp, SlavesPort, _modbusSlavesClientCancel.Token); },
+                    () => {
+                        _modbusSlavesClient =
+                            new Client(ArduinoIp, SlavesPort, _modbusSlavesClientCancel.Token);
+                    },
                     _modbusSlavesClientCancel.Token);
 
                 _connected = true;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoScadaManager.Gui", "ArduinoScadaManager.Gui\ArduinoScadaManager.Gui.csproj", "{B47266E1-1654-45E2-A3C0-B5B19D343E32}"
 EndProject
@@ -71,5 +71,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{46440617-98B8-4429-83A5-DDF4C63E970E} = {54A637CF-4A12-43E3-96A8-6EA0D1D9913B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA61085C-64FE-4AFA-8BC8-D1DE2F97F98A}
 	EndGlobalSection
 EndGlobal
